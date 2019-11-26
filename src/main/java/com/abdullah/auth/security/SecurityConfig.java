@@ -25,10 +25,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 		
 		.antMatchers("/rest/**")
+		.access("hasRole('ROLE_USER')")
 		
-		//.access("hasRole('ROLE_READER')")
-		//.authenticated()
-		.access("hasRole('READER')")
+		.antMatchers("/secure/**")
+		//.permitAll()
+		.access("hasRole('ROLE_ADMIN')")
+		//.access("hasRole('READER')")
 		.antMatchers("/**").permitAll().and()
 				.formLogin()
 				
@@ -46,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 				UserDetails userDetails = readerRepository.findByUsername(username);
 				
-				System.out.println(userDetails.getPassword());
-				System.out.println(userDetails.getAuthorities());
+//				System.out.println(userDetails.getPassword());
+//				System.out.println(userDetails.getAuthorities());
 				return userDetails;
 
 			}
