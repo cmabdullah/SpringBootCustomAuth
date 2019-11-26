@@ -19,6 +19,9 @@ import com.abdullah.auth.repository.ReaderRepository;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private ReaderRepository readerRepository;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -26,7 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		.antMatchers("/rest/**")
 		.access("hasRole('ROLE_USER')")
-		
 		.antMatchers("/secure/**")
 		//.permitAll()
 		.access("hasRole('ROLE_ADMIN')")
@@ -41,20 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-		
-		.userDetailsService(new UserDetailsService() {
-			@Override
-			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				UserDetails userDetails = readerRepository.findByUsername(username);
-				
-//				System.out.println(userDetails.getPassword());
-//				System.out.println(userDetails.getAuthorities());
-				return userDetails;
-
-			}
-		}).passwordEncoder(encodePWD());
-
+		auth.userDetailsService(userDetailsService).passwordEncoder(encodePWD());
 	}
 	
 	
