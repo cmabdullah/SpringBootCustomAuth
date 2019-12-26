@@ -78,4 +78,13 @@ public class Reader implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Reader [username=" + username + ", fullname=" + fullname + ", password=" + password + ", userRole="
+				+ userRole + "]";
+	}
+	
+	
+	
 }

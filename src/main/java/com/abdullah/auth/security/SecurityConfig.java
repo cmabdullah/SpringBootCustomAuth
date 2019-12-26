@@ -7,19 +7,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import com.abdullah.auth.repository.ReaderRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private ReaderRepository readerRepository;
-	
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -28,7 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 		
 		.antMatchers("/rest/**")
-		.access("hasRole('ROLE_USER')")
+		//.access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+		.access("hasRole('ROLE_USER') ")
 		.antMatchers("/secure/**")
 		//.permitAll()
 		.access("hasRole('ROLE_ADMIN')")
